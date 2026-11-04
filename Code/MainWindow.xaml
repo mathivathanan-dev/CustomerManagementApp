@@ -1,0 +1,295 @@
+﻿<Window x:Class="CustomerManagementApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="User Management"
+        Height="680"
+        Width="1100"
+        MinHeight="600"
+        MinWidth="950"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F5FA">
+
+    <Window.Resources>
+
+     
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#252A35"/>
+            <Setter Property="Background" Value="#FAFAFC"/>
+            <Setter Property="BorderBrush" Value="#DDE0E8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,7,0,15"/>
+        </Style>
+
+        
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#303747"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+       
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8F8FB"/>
+            <Setter Property="Foreground" Value="#606779"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+       
+        <Style TargetType="DataGridRow">
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#252A35"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderBrush" Value="#F0F0F3"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EEF0FF"/>
+                    <Setter Property="Foreground" Value="#252A35"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
+       
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#5145E5"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Margin" Value="0,6,0,7"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="27"/>
+        </Grid.RowDefinitions>
+
+       
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="323"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="White"
+                    BorderBrush="#E7E8EF"
+                    BorderThickness="0,0,1,0">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Margin="26,25,24,20">
+
+                       
+                        <TextBlock Text="Select user"
+                                   Style="{StaticResource FieldLabel}"/>
+
+                        <ComboBox x:Name="cmbCustomer"
+                                  DisplayMemberPath="Name"
+                                  SelectionChanged="cmbCustomer_SelectionChanged"/>
+
+                        <TextBlock Text="Choose a registered user to load their details below"
+                                   FontSize="10"
+                                   Foreground="#727887"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,16"/>
+
+                        <Separator Background="#E5E6EB"
+                                   Height="1"
+                                   Margin="0,0,0,17"/>
+
+                        <TextBlock Text="User details"
+                                   FontSize="17"
+                                   FontWeight="Bold"
+                                   Foreground="#252A35"/>
+
+                        <TextBlock Text="Fill in the form and click Register"
+                                   FontSize="11"
+                                   Foreground="#7B8190"
+                                   Margin="0,5,0,19"/>
+
+                        <TextBlock Text="Name"
+                                   Style="{StaticResource FieldLabel}"/>
+
+                        <TextBox x:Name="txtName"/>
+
+                        <TextBlock Text="Phone"
+                                   Style="{StaticResource FieldLabel}"/>
+
+                        <TextBox x:Name="txtPhone"/>
+
+                        
+                        <TextBlock Text="Email"
+                                   Style="{StaticResource FieldLabel}"/>
+
+                        <TextBox x:Name="txtEmail"/>
+
+                        <TextBlock Text="Location"
+                                   Style="{StaticResource FieldLabel}"/>
+
+                        <TextBox x:Name="txtLocation"
+                                 Margin="0,7,0,18"/>
+
+                        
+                        <Button Content="＋  Register"
+                                Height="40"
+                                Background="#5145E5"
+                                Foreground="White"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="btnRegister_Click">
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="7">
+                                        <ContentPresenter
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+
+                        </Button>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <Grid Grid.Column="1"
+                  Background="#F5F6FA"
+                  Margin="24,25,25,23">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="63"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <StackPanel VerticalAlignment="Top">
+
+                        <TextBlock Text="Registered users"
+                                   FontSize="21"
+                                   FontWeight="Bold"
+                                   Foreground="#252A35"/>
+
+                        <TextBlock Text="Every new registration appears here and in the Select user list"
+                                   FontSize="11"
+                                   Foreground="#727887"
+                                   Margin="0,5,0,0"/>
+
+                    </StackPanel>
+
+                    <Border Background="#EEF0FF" CornerRadius="20"  Padding="12,5"
+ HorizontalAlignment="Right"
+ VerticalAlignment="Center">
+                           
+
+                        <TextBlock x:Name="txtCount"
+                                   Text="3 users"
+                                   FontSize="11"
+                                   Foreground="#39318C"/>
+                    </Border>
+
+                </Grid>
+
+               
+                <Border Grid.Row="1"
+                        Background="White"
+                        BorderBrush="#E6E7ED"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        ClipToBounds="True">
+
+                    <DataGrid x:Name="dgCustomers"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserResizeRows="False"
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="None"
+                              RowHeaderWidth="0"
+                              Background="White"
+                              BorderThickness="0"
+                              HorizontalGridLinesBrush="#F0F0F3">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="NAME"
+                                                Binding="{Binding Name}"
+                                                Width="1.2*"/>
+
+                            <DataGridTextColumn Header="PHONE"
+                                                Binding="{Binding Phone}"
+                                                Width="0.9*"/>
+
+                            <DataGridTextColumn Header="EMAIL"
+                                                Binding="{Binding Email}"
+                                                Width="1.3*"/>
+
+                            <DataGridTextColumn Header="LOCATION"
+                                                Binding="{Binding Location}"
+                                                Width="0.9*"/>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Border>
+
+            </Grid>
+        </Grid>
+
+        
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="#E8E9EF"
+                BorderThickness="0,1,0,0">
+
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="14,0">
+
+                <Ellipse Width="7"
+                         Height="7"
+                         Fill="#16864B"
+                         Margin="0,0,7,0"/>
+
+                <TextBlock x:Name="txtStatus"
+                           Text="Ready"
+                           FontSize="10"
+                           Foreground="#515866"
+                           VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+</Window>

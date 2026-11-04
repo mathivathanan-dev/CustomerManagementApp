@@ -1,0 +1,30 @@
+[
+  {
+    "id": 0,
+    "name": "Mathivathanan m",
+    "email": "mathi@gmail.com",
+    "phone": "9345236847",
+    "locations": "Coimbatore"
+  },
+  {
+    "id": 1,
+    "name": "priya",
+    "email": "priya@gmail.com",
+    "phone": "93452364563",
+    "locations": "selam"
+  },
+  {
+    "id": 2,
+    "name": "pavish",
+    "email": "pavish@gmail.com",
+    "phone": "93453456847",
+    "locations": "ooty"
+  },
+  {
+    "id": 3,
+    "name": "sunil",
+    "email": "sunil@gmail.com",
+    "phone": "653687568",
+    "locations": "Coimbatore"
+  }
+]
