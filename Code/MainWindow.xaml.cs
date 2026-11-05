@@ -1,4 +1,5 @@
-﻿using System;
+
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -39,33 +40,57 @@ namespace CustomerManagementApp
 
         private void LoadCustomers()
         {
-            if (File.Exists(fullpath))
+            try
             {
+                if (!File.Exists(fullpath))
+                {
+                    Directory.CreateDirectory(
+                        Path.GetDirectoryName(fullpath));
+
+                    File.WriteAllText(fullpath, "[]");
+                    return;
+                }
+
                 string jsondata = File.ReadAllText(fullpath);
 
-                var data =
-                    JsonConvert.DeserializeObject
-                    <ObservableCollection<Customer>>(jsondata);
-
-                if (data != null)
+                if (!string.IsNullOrWhiteSpace(jsondata))
                 {
-                    customers = data;
+                    var data =
+                        JsonConvert.DeserializeObject
+                        <ObservableCollection<Customer>>(jsondata);
+
+                    if (data != null)
+                    {
+                        foreach (var customer in data)
+                        {
+                            customers.Add(customer);
+                        }
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                File.WriteAllText(fullpath, "[]");
+                MessageBox.Show(
+                    "Error loading customers: " + ex.Message);
             }
         }
 
         private void SaveCustomers()
         {
-            string jsondata =
-                JsonConvert.SerializeObject(
-                    customers,
-                    Formatting.Indented);
+            try
+            {
+                string jsondata =
+                    JsonConvert.SerializeObject(
+                        customers,
+                        Formatting.Indented);
 
-            File.WriteAllText(fullpath, jsondata);
+                File.WriteAllText(fullpath, jsondata);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error saving customers: " + ex.Message);
+            }
         }
 
         private void btnRegister_Click(
@@ -80,11 +105,20 @@ namespace CustomerManagementApp
                 return;
             }
 
+            bool exists = customers.Any(c =>
+                c.Phone == txtPhone.Text.Trim());
+
+            if (exists)
+            {
+                MessageBox.Show("Customer already exists!");
+                return;
+            }
+
             Customer newCustomer = new Customer
             {
                 Id = customers.Count > 0
                     ? customers.Max(c => c.Id) + 1
-                    : 0,
+                    : 1,
 
                 Name = txtName.Text.Trim(),
                 Phone = txtPhone.Text.Trim(),
@@ -95,6 +129,10 @@ namespace CustomerManagementApp
             customers.Add(newCustomer);
 
             SaveCustomers();
+
+            txtSearch.Clear();
+
+            dgCustomers.ItemsSource = customers;
 
             cmbCustomer.SelectedItem = newCustomer;
             dgCustomers.SelectedItem = newCustomer;
@@ -121,6 +159,45 @@ namespace CustomerManagementApp
 
                 dgCustomers.SelectedItem = selected;
                 dgCustomers.ScrollIntoView(selected);
+            }
+        }
+
+        private void btnSearch_Click(
+            object sender, RoutedEventArgs e)
+        {
+            string searchText = txtSearch.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                dgCustomers.ItemsSource = customers;
+
+                txtStatus.Text = "Showing all customers";
+                return;
+            }
+
+            var listitem =
+                from l in customers
+                where l.Name != null &&
+                      l.Name.ToLower().Contains(
+                          searchText.ToLower())
+                orderby l.Name descending
+                select l;
+
+            var searchResults = listitem.ToList();
+
+            dgCustomers.ItemsSource = searchResults;
+
+            if (searchResults.Count > 0)
+            {
+                txtStatus.Text =
+                    searchResults.Count + " customer(s) found";
+            }
+            else
+            {
+                txtStatus.Text = "No customers found";
+
+                MessageBox.Show(
+                    "No matching customers found!");
             }
         }
 
